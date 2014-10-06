@@ -5,6 +5,9 @@ def Run( conn, nick, channel, msg ):
 	if len( parts ) > 1:
 		subreddit = parts[1]
 
+	if "/" in subreddit:
+		subreddit = subreddit.rpartition( "/" )[2]
+
 	post = next( conn.r.get_subreddit( subreddit ).get_top( limit=1 ), None )
 
 	if post:

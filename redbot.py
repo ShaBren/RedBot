@@ -181,6 +181,8 @@ class RedBot:
 				self.HandleCommand( nick, channel, msg[1:] )
 			elif msg.startswith( self.nickname ):
 				self.HandleCommand( nick, channel, " ".join( msg.split( " " )[1:] ) )
+			elif msg.endswith( self.commandPrefix ):
+				self.HandleCommand( nick, channel, msg[::-1][1:] )
 
 	def LoadCommands( self ):
 		self.commands.clear()
