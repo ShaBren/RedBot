@@ -78,9 +78,13 @@ class RedBot:
 			while not self.connected:
 				self.Connect()
 
-			data = self.socket.recv( 4096 )
+			try:
+				data = self.socket.recv( 4096 )
+			except:
+				data = None
+
 			
-			if len( data ) == 0:
+			if data is None or len( data ) == 0:
 				print( "Connection to %s lost. Attempting to reconnect...\n" % ( self.server, ) )
 				self.connected = False
 				continue
@@ -177,6 +181,11 @@ class RedBot:
 			channel = msg[2]
 			msg = msg[3]
 
+			if nick == "CLTSBridge":
+				parts = msg.partition( ">" )
+				nick = parts[0][1:]
+				msg = parts[2][1:]
+
 			if msg.startswith( self.commandPrefix ):
 				self.HandleCommand( nick, channel, msg[1:] )
 			elif msg.startswith( self.nickname ):
@@ -205,7 +214,8 @@ class RedBot:
 						module.Run( self, nick, channel, cmd )
 						return
 
-				self.SendText( channel, "%s: Unknown command." % ( nick, ) )
+				self.commands['cb'].Run( self, nick, channel, cmd )
+				#self.SendText( channel, "%s: Unknown command." % ( nick, ) )
 						
 		except:
 			print( traceback.format_exc() )

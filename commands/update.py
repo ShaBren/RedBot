@@ -30,6 +30,9 @@ def Run( conn, nick, channel, msg ):
 	elif nick.startswith( "Sha`Bren" ):
 		hour = 18
 		minute = 30
+	elif nick.startswith( "JoeDaddy" ):
+		hour = 17
+		minute = 00
 
 	delta = GetDeltaTime( hour, minute )
 
